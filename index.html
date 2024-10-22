@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Servlet With JDBC</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div> <form name="form1" target="output"> 
+                <table> 
+                    <tr> 
+                        <td>Enter Rlno:</td><td><input type="text" 
+                                                       name="txtRlno"></td> 
+                    </tr> 
+                    <tr> 
+                        <td>Enter Name:</td><td><input type="text" 
+                                                       name="txtName"></td> 
+                    </tr> 
+                    <tr> 
+                        <td>Enter City: </td><td><input type="text" 
+                                                        name="txtCity"></td> 
+                    </tr> 
+                </table> 
+                <button type="submit" 
+                        formaction="/InsertData">Insert</button> 
+                <button type="submit" 
+                        formaction="/UpdateData">Update</button> 
+                <button type="submit" 
+                        formaction="/DeleteData">Delete</button> 
+                <button type="submit" 
+                        formaction="/ViewData">View</button> 
+            </form>
+        </div>
+         <iframe name="output"></iframe> 
+
+    </body>
+</html>
