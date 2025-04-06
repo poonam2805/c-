@@ -1,0 +1,207 @@
+activity_main.xml ------------------ 
+
+
+
+<?xml version="1.0" encoding="utf-8"?>   
+<android.support.constraint.ConstraintLayout 
+xmlns:android="http://schemas.android.com/apk/res/android"   
+    xmlns:app="http://schemas.android.com/apk/res-auto"   
+    xmlns:tools="http://schemas.android.com/tools"   
+    android:layout_width="match_parent"   
+    android:layout_height="match_parent"   
+    tools:context="example.com.kotlinsharedpreference.MainActivity">   
+   
+    <TableLayout   
+        android:layout_width="368dp"   
+        android:layout_height="495dp"   
+        android:layout_marginBottom="8dp"   
+        android:layout_marginEnd="8dp"   
+        android:layout_marginStart="8dp"   
+        android:layout_marginTop="8dp" 
+	 app:layout_constraintBottom_toBottomOf="parent"   
+        app:layout_constraintEnd_toEndOf="parent"   
+        app:layout_constraintStart_toStartOf="parent"   
+        app:layout_constraintTop_toTopOf="parent">   
+        <TableRow>   
+            <TextView   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="0"   
+                android:layout_marginLeft="10sp"   
+                android:layout_marginStart="10sp"   
+                android:text="Enter Id"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+            <EditText   
+                android:id="@+id/editId"   
+                android:layout_width="201dp"   
+                android:layout_height="wrap_content"   
+                android:layout_column="1"   
+                android:layout_marginLeft="50sp"   
+                android:layout_marginStart="50sp"   
+                android:hint="id"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+        </TableRow>   
+        <TableRow>   
+   
+            <TextView   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="0"   
+                android:layout_marginLeft="10sp"   
+                android:layout_marginStart="10sp"   
+                android:text="Enter Name"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+   
+            <EditText   
+                android:id="@+id/editName"   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="1"   
+                android:layout_marginLeft="50sp"   
+                android:layout_marginStart="50sp"   
+                android:hint="name"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+        </TableRow>   
+        <TableRow android:layout_marginTop="60dp">   
+   
+            <TextView   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="0"   
+                android:layout_marginLeft="10sp"   
+                android:layout_marginStart="10sp"   
+                android:text="Your Id"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+            <TextView   
+                android:id="@+id/textViewShowId"   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="1"  
+		 android:layout_marginLeft="50sp"   
+                android:layout_marginStart="50sp"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+        </TableRow>   
+        <TableRow android:layout_marginTop="20dp">   
+            <TextView   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="0"   
+                android:layout_marginLeft="10sp"   
+                android:layout_marginStart="10sp"   
+                android:text="Your Name"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+            <TextView   
+                android:id="@+id/textViewShowName"   
+                android:layout_width="wrap_content"   
+                android:layout_height="wrap_content"   
+                android:layout_column="1"   
+                android:layout_marginLeft="50sp"   
+                android:layout_marginStart="50sp"   
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" 
+/>   
+        </TableRow>   
+    </TableLayout>   
+   
+    <LinearLayout   
+        android:layout_width="fill_parent"   
+        android:layout_height="wrap_content"   
+        android:layout_marginBottom="16dp"   
+        android:layout_marginEnd="8dp"   
+        android:layout_marginStart="8dp"   
+        android:orientation="horizontal"   
+        android:gravity="center"   
+        app:layout_constraintBottom_toBottomOf="parent"   
+        app:layout_constraintEnd_toEndOf="parent"   
+        app:layout_constraintHorizontal_bias="0.0"   
+        app:layout_constraintStart_toStartOf="parent">   
+        <Button   
+            android:id="@+id/save"   
+            android:layout_width="wrap_content"   
+            android:layout_height="wrap_content"   
+            android:text="Save" />   
+        <Button   
+            android:id="@+id/view"   
+            android:layout_width="wrap_content"   
+            android:layout_height="wrap_content"   
+            android:text="View" />   
+        <Button   
+            android:id="@+id/clear"   
+            android:layout_width="wrap_content"   
+            android:layout_height="wrap_content"   
+            android:text="Clear" />   
+    </LinearLayout>   
+</android.support.constraint.ConstraintLayout>    
+
+ ---------------------------------------------------------------- 
+MainActivity.kt ---------------- 
+
+
+package example.com.kotlinsharedpreference   
+   
+import android.content.Context   
+import android.content.SharedPreferences  
+import android.support.v7.app.AppCompatActivity   
+import android.os.Bundle   
+import android.view.View   
+import android.widget.Button   
+import android.widget.EditText   
+import android.widget.TextView   
+   
+   
+   
+class MainActivity : AppCompatActivity() {   
+   
+    private val sharedPrefFile = "kotlinsharedpreference"   
+   
+    override fun onCreate(savedInstanceState: Bundle?) {   
+        super.onCreate(savedInstanceState)   
+        setContentView(R.layout.activity_main)   
+   
+        val inputId = findViewById<EditText>(R.id.editId)   
+        val inputName = findViewById<EditText>(R.id.editName)   
+        val outputId = findViewById<TextView>(R.id.textViewShowId)   
+        val outputName = findViewById<TextView>(R.id.textViewShowName)   
+   
+        val btnSave = findViewById<Button>(R.id.save)   
+        val btnView = findViewById<Button>(R.id.view)   
+        val btnClear = findViewById<Button>(R.id.clear)   
+        val sharedPreferences: SharedPreferences = 
+this.getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)   
+        btnSave.setOnClickListener(View.OnClickListener {   
+            val id:Int = Integer.parseInt(inputId.text.toString())   
+            val name:String = inputName.text.toString()   
+            val editor:SharedPreferences.Editor =  sharedPreferences.edit()   
+            editor.putInt("id_key",id)   
+            editor.putString("name_key",name)   
+            editor.apply()   
+            editor.commit()   
+        })   
+        btnView.setOnClickListener {   
+            val sharedIdValue = sharedPreferences.getInt("id_key",0)   
+            val sharedNameValue = 
+sharedPreferences.getString("name_key","defaultname")   
+            if(sharedIdValue.equals(0) && sharedNameValue.equals("defaultname")){   
+                outputName.setText("default name: ${sharedNameValue}").toString()   
+                outputId.setText("default id: ${sharedIdValue.toString()}")   
+            }else{   
+                outputName.setText(sharedNameValue).toString()   
+                outputId.setText(sharedIdValue.toString())   
+            }   
+   
+        }   
+        btnClear.setOnClickListener(View.OnClickListener {   
+            val editor = sharedPreferences.edit()   
+            editor.clear()   
+            editor.apply()   
+            outputName.setText("").toString()   
+            outputId.setText("".toString())   
+        })   
+    }   
+} 
