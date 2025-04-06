@@ -1,0 +1,198 @@
+activity_main.xml ------------------ 
+<?xml version="1.0" encoding="utf-8"?>   
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"   
+    xmlns:app="http://schemas.android.com/apk/res-auto"   
+    xmlns:tools="http://schemas.android.com/tools"   
+    android:layout_width="match_parent"   
+    android:layout_height="match_parent"   
+    tools:context="example.com.kotlinexternalstoragereadwrite.MainActivity">   
+   
+   
+    <TextView   
+        android:id="@+id/textView"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignLeft="@+id/textView2"   
+        android:layout_alignParentTop="true"   
+        android:layout_alignStart="@+id/textView2"   
+        android:layout_marginTop="68dp"   
+        android:text="File Name"   
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"   
+        app:layout_constraintBottom_toBottomOf="parent"   
+        app:layout_constraintEnd_toEndOf="parent"   
+        app:layout_constraintHorizontal_bias="0.027"   
+        app:layout_constraintStart_toStartOf="parent"   
+        app:layout_constraintTop_toTopOf="parent"   
+        app:layout_constraintVertical_bias="0.065" />   
+   
+    <TextView   
+        android:id="@+id/textView2"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignBottom="@+id/editTextData"   
+        android:layout_alignParentLeft="true"   
+        android:layout_alignParentStart="true"   
+        android:layout_marginBottom="36dp"   
+        android:layout_marginLeft="50dp"   
+        android:layout_marginStart="50dp"   
+        android:text="File Data"   
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"   
+        app:layout_constraintBottom_toBottomOf="parent"   
+        app:layout_constraintEnd_toEndOf="parent"   
+        app:layout_constraintHorizontal_bias="0.027"   
+        app:layout_constraintStart_toStartOf="parent"   
+        app:layout_constraintTop_toBottomOf="@+id/textView"   
+        app:layout_constraintVertical_bias="0.167" />   
+   
+    <EditText   
+        android:id="@+id/editTextFile"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignLeft="@+id/editTextData"   
+        android:layout_alignStart="@+id/editTextData"   
+        android:layout_alignTop="@+id/textView"   
+        android:ems="10"   
+        android:inputType="none" />   
+   
+    <EditText   
+        android:id="@+id/editTextData"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignParentEnd="true"  
+	  android:layout_alignParentRight="true"   
+        android:layout_below="@+id/editTextFile"   
+        android:layout_marginEnd="37dp"   
+        android:layout_marginRight="37dp"   
+        android:layout_marginTop="30dp"   
+        android:ems="10"   
+        android:inputType="none"   
+        android:lines="5" />   
+   
+    <Button   
+        android:id="@+id/button_save"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignParentBottom="true"   
+        android:layout_marginBottom="68dp"   
+        android:layout_toLeftOf="@+id/editTextData"   
+        android:layout_toStartOf="@+id/editTextData"   
+        android:text="Save" />   
+   
+    <Button   
+        android:id="@+id/button_view"   
+        android:layout_width="wrap_content"   
+        android:layout_height="wrap_content"   
+        android:layout_alignBottom="@+id/button_save"   
+        android:layout_alignEnd="@+id/editTextData"   
+        android:layout_alignRight="@+id/editTextData"   
+        android:layout_marginEnd="43dp"   
+        android:layout_marginRight="43dp"   
+        android:text="View" />   
+   
+</RelativeLayout>    ---------------------------------------------------------------- 
+MainActivity.kt ---------------- 
+package example.com.kotlinexternalstoragereadwrite   
+   
+import android.support.v7.app.AppCompatActivity   
+import android.os.Bundle   
+import android.view.View   
+import android.widget.Button   
+import android.widget.EditText   
+import android.widget.Toast   
+import android.os.Environment   
+import java.io.*   
+   
+class MainActivity : AppCompatActivity() {   
+    private val filepath = "MyFileStorage"   
+    internal var myExternalFile: File?=null   
+    private val isExternalStorageReadOnly: Boolean get() {   
+        val extStorageState = Environment.getExternalStorageState()   
+        return if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {   
+                true   
+        } else {   
+                false   
+        }   
+    }   
+    private val isExternalStorageAvailable: Boolean get() {   
+        val extStorageState = Environment.getExternalStorageState()   
+        return if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {   
+            true   
+        } else{   
+            false   
+        }  
+ }   
+   
+    override fun onCreate(savedInstanceState: Bundle?) {   
+        super.onCreate(savedInstanceState)   
+        setContentView(R.layout.activity_main)   
+        val fileName = findViewById(R.id.editTextFile) as EditText   
+        val fileData = findViewById(R.id.editTextData) as EditText   
+        val saveButton = findViewById<Button>(R.id.button_save) as Button   
+        val viewButton = findViewById(R.id.button_view) as Button   
+   
+        saveButton.setOnClickListener(View.OnClickListener {   
+           myExternalFile = File(getExternalFilesDir(filepath), 
+fileName.text.toString())   
+            try {   
+                val fileOutPutStream = FileOutputStream(myExternalFile)   
+                fileOutPutStream.write(fileData.text.toString().toByteArray())   
+                fileOutPutStream.close()   
+            } catch (e: IOException) {   
+                e.printStackTrace()   
+            }   
+            Toast.makeText(applicationContext,"data save",Toast.LENGTH_SHORT).show()  
+        })   
+        viewButton.setOnClickListener(View.OnClickListener {   
+           myExternalFile = File(getExternalFilesDir(filepath), 
+fileName.text.toString())   
+   
+           val filename = fileName.text.toString()   
+           myExternalFile = File(getExternalFilesDir(filepath),filename)   
+           if(filename.toString()!=null && filename.toString().trim()!=""){   
+               var fileInputStream =FileInputStream(myExternalFile)   
+               var inputStreamReader: InputStreamReader = 
+InputStreamReader(fileInputStream)   
+               val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)  
+               val stringBuilder: StringBuilder = StringBuilder()   
+               var text: String? = null   
+               while ({ text = bufferedReader.readLine(); text }() != null) {   
+                   stringBuilder.append(text)   
+               }   
+               fileInputStream.close()   
+               //Displaying data on EditText   
+               
+Toast.makeText(applicationContext,stringBuilder.toString(),Toast.LENGTH_SHORT).show()  
+           }   
+        })   
+   
+        if (!isExternalStorageAvailable || isExternalStorageReadOnly) {   
+            saveButton.isEnabled = false   
+        }   
+    }   
+}  
+
+
+--------------------------------------------------------------------------------- 
+ AndroidManifest.xml --------------------- 
+<?xml version="1.0" encoding="utf-8"?>   
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"   
+    package="example.javatpoint.com.kotlinexternalstoragereadwrite">   
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>   
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>   
+    <application   
+        android:allowBackup="true"   
+        android:icon="@mipmap/ic_launcher"   
+        android:label="@string/app_name"   
+        android:roundIcon="@mipmap/ic_launcher_round"   
+        android:supportsRtl="true"  
+  	android:theme="@style/AppTheme">   
+        <activity android:name=".MainActivity">   
+            <intent-filter>   
+                <action android:name="android.intent.action.MAIN" />   
+   
+                <category android:name="android.intent.category.LAUNCHER" />   
+            </intent-filter>   
+        </activity>   
+    </application>   
+   
+</manifest>
